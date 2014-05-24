@@ -7,6 +7,7 @@
 //
 
 #import "BNRItemsViewController.h"
+#import "BNRDetailViewController.h"
 #import "BNRItemStore.h"
 #import "BNRItem.h"
 
@@ -142,6 +143,33 @@ moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath
 {
     [[BNRItemStore sharedStore] moveItemAtIndex:sourceIndexPath.row
                                         toIndex:destinationIndexPath.row];
+}
+
+// Called after the user changes the selection.
+- (void)tableView:(UITableView *)tableView
+didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    BNRDetailViewController *dvc = [[BNRDetailViewController alloc] init];
+    
+    
+    NSArray *items = [[BNRItemStore sharedStore] allItems];
+    BNRItem *selectedItem = items[indexPath.row];
+    
+    // give Detail View Controller a pointer ot the item object in row
+    dvc.item = selectedItem;
+    
+    // push to top of nav controller's stack
+    [self.navigationController pushViewController:dvc
+                                         animated:YES];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+   
+    [self.tableView reloadData];
+    
 }
 
 
