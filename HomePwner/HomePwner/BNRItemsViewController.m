@@ -26,6 +26,20 @@
     // call the superclass' designated initializer
     self = [super initWithStyle:UITableViewStylePlain];
     
+    if (self) {
+        UINavigationItem *navItem = self.navigationItem;
+        navItem.title = @"Homepwner";
+        
+        // Create new bar button item that will send addNewItem to BNRItemsViewController
+        UIBarButtonItem *bbi = [[UIBarButtonItem alloc]
+                                initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                target:self action:@selector(addNewItem:)];
+        
+        navItem.rightBarButtonItem = bbi;
+        
+        navItem.leftBarButtonItem = self.editButtonItem;
+    }
+    
     return self;
 }
 
@@ -60,39 +74,6 @@
     [self.tableView insertRowsAtIndexPaths:@[indexPath]
                           withRowAnimation:UITableViewRowAnimationTop];
 }
-
-- (IBAction)toggleEditingMode:(id)sender
-{
-    // if you are currently in editing mode ...
-    if (self.isEditing) {
-        // change text of button to inform user of state
-        [sender setTitle:@"Edit" forState:UIControlStateNormal];
-        
-        // turn off editing mode
-        [self setEditing:NO animated:YES];
-    } else {
-        // change text of button to inform user of state
-        [sender setTitle:@"Done" forState:UIControlStateNormal];
-        
-        // turn off editing mode
-        [self setEditing:YES animated:YES];
-    }
-}
-
-- (UIView*)headerView
-{
-    // if headerView is not loaded yet
-    if (!_headerView) {
-        
-        // load HeaderView.xib
-        [[NSBundle mainBundle] loadNibNamed:@"HeaderView"
-                                      owner:self
-                                    options:nil];
-    }
-    
-    return _headerView;
-}
-
 
 // implementation required UITableViewDataSource method
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -134,7 +115,7 @@
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
     // TBD the other editing style is Inserting a Row.
-}
+} 
 
 // tableView handler for moving rows 
 - (void) tableView:(UITableView *)tableView
